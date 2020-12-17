@@ -30,7 +30,7 @@ class JsSocket:
         label = mapped[0]
         args = []
         for i in range(len(mapped) - 1): args.append(mapped[i + 1])
-        packet = self.handler(JsPacketE(label, args))
+        packet = self.handler(JsPacket(label, args))
         await client.send(packet.parse())
 
     def listen_forever(self):
