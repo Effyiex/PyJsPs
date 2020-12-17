@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title> Effyiex Test Enviroment </title>
+    <script src="../pyjsps.js"> </script>
+  </head>
+  <body>
+    <script>
+      var client = new PySocket("127.0.0.1", 7584);
+      client.send(new PyPacket(prompt("Your Packet: ")), function(packet) {
+        console.log("Server Feedback: " + packet.label);
+      });
+    </script>
+  </body>
+</html>
