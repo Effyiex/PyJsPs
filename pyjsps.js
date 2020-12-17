@@ -49,7 +49,7 @@ class PySocket {
     var socket = new WebSocket("ws://" + server);
     this.log("Sending to \"" + server  + "\": " + packet.label);
     socket.onopen = function(event) { socket.send(packet.parse()); }
-    socket.onmessage = function(event) { recv(PySocket.package(event.data)); }
+    if(recv) socket.onmessage = function(event) { recv(PySocket.package(event.data)); }
   }
 
 }
