@@ -8,5 +8,5 @@ It relies on Asyncio and the Python Websockets API.
 
 # Implementation
 
-- Serverside: Link to https://effyiex.github.io/PyJsPs/pyjsps.js
-- Clientside: Download the Python-Script
+- Clientside: Link to https://effyiex.github.io/PyJsPs/pyjsps.js
+- Serverside: Download the Python-Script
