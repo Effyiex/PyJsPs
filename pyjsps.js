@@ -17,10 +17,12 @@ class PySocket {
 
   static PREFIX = "[PySocket]: ";
 
-  constructor(address, port) {
+  constructor(address, port, secured) {
     this.address = address;
     this.port = port;
     this.debug = true;
+    if(secured != undefined)
+    this.ssl = true;
   }
 
   static package = function(recv) {
@@ -46,7 +48,7 @@ class PySocket {
       return undefined;
     }
     var server = this.address + ':' + this.port;
-    var socket = new WebSocket("ws://" + server);
+    var socket = new WebSocket((this.ssl ? "wss://" : "ws://") + server);
     this.log("Sending to \"" + server  + "\": " + packet.label);
     socket.onopen = function(event) { socket.send(packet.parse()); }
     if(recv) socket.onmessage = function(event) { recv(PySocket.package(event.data)); }

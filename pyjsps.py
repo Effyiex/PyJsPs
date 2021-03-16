@@ -1,6 +1,8 @@
 
-import asyncio;
+import asyncio
 import websockets
+import ssl
+import pathlib
 
 HOST = "127.0.0.1";
 
@@ -19,8 +21,14 @@ class JsPacket:
 
 class JsSocket:
 
-    def __init__(self, port, handler):
-        self.server = websockets.serve(self.handshake, HOST, port)
+    def __init__(self, port, handler, cert=None):
+        if cert != None:
+            ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+            certificate = pathlib.Path(__file__).with_name(cert)
+            ssl_context.load_cert_chain(certificate)
+            self.server = websockets.serve(self.handshake, HOST, port, ssl=ssl_context)
+        else:
+            self.server = websockets.serve(self.handshake, HOST, port)
         self.handler = handler
         self.prefix = "[JsSocket]: "
 
