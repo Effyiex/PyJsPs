@@ -8,5 +8,15 @@ It relies on Asyncio and the Python Websockets API.
 
 # Implementation
 
-- Clientside: Link to https://effyiex.github.io/PyJsPs/pyjsps.js
-- Serverside: Download the Python-Script
+- Clientside: 
+```xml 
+<script src="https://effyiex.github.io/PyJsPs/pyjsps.js"> </script>
+```
+- Serverside:
+  - https://github.com/Effyiex/PyRequire/releases
+  - Add "require.py" to your project 
+  - ````python
+    from require import require_url     
+    pyjsps = require_url("https://effyiex.github.io/PyJsPs/pyjsps.py")
+    ````
+
