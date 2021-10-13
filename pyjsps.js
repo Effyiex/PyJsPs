@@ -6,7 +6,7 @@ function PyPacket(label, args) {
   this.parse = function() {
     var mapped = this.label;
     for(var i = 0; i < this.args.length; i++)
-      mapped += '\n' + this.args[i];
+      mapped += PySocket.splitter + this.args[i];
     return mapped;
   }
   this.response = undefined;
@@ -17,6 +17,8 @@ class PySocket {
 
   static PREFIX = "[PySocket]: ";
 
+  static splitter = '\n';
+
   constructor(address, port, secured) {
     this.address = address;
     this.port = port;
@@ -26,7 +28,7 @@ class PySocket {
   }
 
   static package = function(recv) {
-    var mapped = recv.split('\n');
+    var mapped = recv.split(PySocket.splitter);
     if(mapped.length <= 0) return undefined;
     else {
       var label = mapped[0];

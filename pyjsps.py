@@ -6,6 +6,8 @@ import pathlib
 
 HOST = "127.0.0.1";
 
+info_splitter = '\n'
+
 class JsPacket:
 
     def __init__(self, label, args=[], sender=None):
@@ -16,7 +18,7 @@ class JsPacket:
     def parse(self):
         mapped = self.label
         for arg in self.args:
-            mapped += '\n' + arg
+            mapped += info_splitter + arg
         return mapped
 
 class JsSocket:
@@ -33,13 +35,14 @@ class JsSocket:
 
     async def handshake(self, client, address):
         data = await client.recv()
-        mapped = data.split('\n')
+        mapped = data.split(info_splitter)
         label = mapped[0]
         args = []
         for i in range(len(mapped) - 1): args.append(mapped[i + 1])
         packet = self.handler(JsPacket(label, args))
         await client.send(packet.parse())
 
-    def listen_forever(self):
-        asyncio.get_event_loop().run_until_complete(self.server)
-        asyncio.get_event_loop().run_forever()
+    def listen_forever(self, loop=None):
+        if loop is None: loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.server)
+        loop.run_forever()
