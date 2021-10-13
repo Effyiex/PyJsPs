@@ -24,12 +24,11 @@ class JsPacket:
 class JsSocket:
 
     def __init__(self, port, handler, cert=None):
+        self.ssl_context = None
+        self.port = port
         if cert != None:
             ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
             ssl_context.load_cert_chain(pathlib.Path(os.getcwd() + f"/{cert}/cert.pem"), keyfile=(os.getcwd() + f"/{cert}/key.pem"))
-            self.server = websockets.serve(self.handshake, HOST, port, ssl=ssl_context)
-        else:
-            self.server = websockets.serve(self.handshake, HOST, port)
         self.handler = handler
         self.prefix = "[JsSocket]: "
 
@@ -44,5 +43,10 @@ class JsSocket:
 
     def listen_forever(self, loop=None):
         if loop is None: loop = asyncio.get_event_loop()
+        else: asyncio.set_event_loop(loop)
+        if self.ssl_context is not None:
+            self.server = websockets.serve(self.handshake, HOST, self.port, ssl=self.ssl_context)
+        else:
+            self.server = websockets.serve(self.handshake, HOST, self.port)
         loop.run_until_complete(self.server)
         loop.run_forever()
